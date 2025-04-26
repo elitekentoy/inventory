@@ -34,3 +34,6 @@ jobs:
             -   name: Fail when there are PMD Violations
                 if: steps.pmd.outputs.violations != 0
                 run: exit 1
+
+            -   name: Run SpotBugs via Gradle
+                run: ./gradlew spotbugsMain
