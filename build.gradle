@@ -4,6 +4,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.4'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'checkstyle'
+	id 'pmd'
 	id("com.github.spotbugs") version "6.1.9"
 }
 
@@ -16,14 +18,20 @@ java {
 	}
 }
 
-spotbugs {
-	excludeFilter = file("$rootDir/config/spotbugs/exclude.xml")
-}
-
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+}
+
+spotbugs {
+	excludeFilter = file("$rootDir/config/spotbugs/exclude.xml")
+}
+
+pmd {
+	consoleOutput = true
+	toolVersion = "7.0.0"
+	rulesMinimumPriority = 5
 }
 
 repositories {
@@ -39,6 +47,13 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+	implementation 'org.apache.commons:commons-collections4:4.5.0'
+
+	//https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+	implementation 'com.puppycrawl.tools:checkstyle:10.23.0'
 }
 
 tasks.named('test') {
@@ -51,3 +66,11 @@ tasks.withType(SpotBugsTask).configureEach {
 		html.required = true // Enable HTML report
 	}
 }
+
+tasks.withType(Pmd).configureEach {
+	reports {
+		xml.required.set(true)
+		html.required.set(true) // Enables HTML reports
+	}
+}
+
