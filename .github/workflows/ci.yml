@@ -34,3 +34,9 @@ jobs:
             -   name: Fail when there are PMD Violations
                 if: steps.pmd.outputs.violations != 0
                 run: exit 1
+
+            -   name: Grant Execute Permission for GradleW
+                run: chmod +x ./gradlew
+
+            -   name: Run SpotBugs via Gradle
+                run: ./gradlew spotbugsMain
