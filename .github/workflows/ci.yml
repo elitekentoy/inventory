@@ -1,0 +1,21 @@
+name: Inventory Continuous Integration
+
+on:
+    pull_request:
+        branches: [dev]
+
+jobs:
+    tests:
+        name: Integration Checks
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Check out code
+                uses: actions/checkout@v4
+            
+            -   name: Run Checkstyle
+                uses: dbelyaev/action-checkstyle@master
+                with:
+                    github_token: ${{ secrets.GITHUB_TOKEN }}
+                    reporter: github-pr-review
+                    checkstyle_config: ./config/checkstyle/checkstyle.xml
