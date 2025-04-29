@@ -1,4 +1,4 @@
-package king.leonidas.inventory.model;
+package king.leonidas.inventory.model.product;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

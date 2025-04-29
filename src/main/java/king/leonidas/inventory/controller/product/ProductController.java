@@ -1,6 +1,6 @@
 package king.leonidas.inventory.controller.product;
 
-import king.leonidas.inventory.model.Product;
+import king.leonidas.inventory.model.product.Product;
 import king.leonidas.inventory.service.product.ProductService;
 import king.leonidas.inventory.service.product.decorator.ProductSet;
 import org.springframework.beans.factory.annotation.Autowired;

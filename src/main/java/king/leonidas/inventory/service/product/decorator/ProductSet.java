@@ -1,6 +1,6 @@
 package king.leonidas.inventory.service.product.decorator;
 
-import king.leonidas.inventory.model.Product;
+import king.leonidas.inventory.model.product.Product;
 import org.apache.commons.collections4.set.AbstractSetDecorator;
 
 import java.io.Serial;
