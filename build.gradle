@@ -30,7 +30,8 @@ spotbugs {
 
 pmd {
 	consoleOutput = true
-	toolVersion = "7.0.0"
+	toolVersion = "7.13.0"
+	ruleSetFiles = files("$rootDir/config/pmd/quickstart.xml")
 	rulesMinimumPriority = 5
 }
 

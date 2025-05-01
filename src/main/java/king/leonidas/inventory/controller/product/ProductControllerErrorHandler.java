@@ -17,8 +17,8 @@ public class ProductControllerErrorHandler {
 	 * @param exception Product Not Found Exception
 	 * @return Message
 	 */
-	@ExceptionHandler(value = {ProductNotFoundException.class})
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(ProductNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String productNotFound(final ProductNotFoundException exception)
 	{
 		return exception.getLocalizedMessage();

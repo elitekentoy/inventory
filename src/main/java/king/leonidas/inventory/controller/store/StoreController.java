@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Store Controller
  */
 @Controller
-@RequestMapping(value = "api/v1/stores")
+@RequestMapping("api/v1/stores")
 public class StoreController {
 
 	/**

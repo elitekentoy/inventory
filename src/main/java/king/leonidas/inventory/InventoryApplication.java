@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * Main Application
  */
+@SuppressWarnings({"PMD.UseUtilityClass"})
 @SpringBootApplication
 public class InventoryApplication {
 

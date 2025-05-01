@@ -20,8 +20,8 @@ public class StoreControllerErrorHandler
 	 * @param exception Store Not Found Exception
 	 * @return Message
 	 */
-	@ExceptionHandler(value = {StoreNotFoundException.class})
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ExceptionHandler(StoreNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String storeNotFound(final StoreNotFoundException exception)
 	{
 		return exception.getLocalizedMessage();
@@ -33,8 +33,8 @@ public class StoreControllerErrorHandler
 	 * @param exception Invalid Store Exception
 	 * @return Message
 	 */
-	@ExceptionHandler(value = {InvalidStoreException.class})
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(InvalidStoreException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public String invalidStore(final InvalidStoreException exception)
 	{
 		return exception.getLocalizedMessage();
