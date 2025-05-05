@@ -1,5 +1,6 @@
 package king.leonidas.inventory.controller.store;
 
+import king.leonidas.inventory.controller.user_store.UserStoreController;
 import king.leonidas.inventory.service.store.exception.InvalidStoreException;
 import king.leonidas.inventory.service.store.exception.StoreNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * Store Controller Error Handler
  */
-@RestControllerAdvice(assignableTypes = {StoreController.class})
+@RestControllerAdvice(assignableTypes = {StoreController.class, UserStoreController.class})
 public class StoreControllerErrorHandler
 {
 

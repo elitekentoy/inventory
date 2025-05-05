@@ -6,8 +6,12 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import king.leonidas.inventory.dto.user_store.CreateStoreRequest;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Locale;
 
 /**
  * Store Model
@@ -15,6 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 public class Store
 {
 
@@ -35,6 +40,17 @@ public class Store
 	 */
 	@Enumerated(EnumType.STRING)
 	private StoreType type;
+
+	/**
+	 * Constructor
+	 *
+	 * @param source Create Store Request
+	 */
+	public Store(final CreateStoreRequest source)
+	{
+		this.name = source.storeName();
+		this.type = StoreType.valueOf(source.storeType().toUpperCase(Locale.ROOT));
+	}
 
 	/**
 	 * Update the fields based from the source
