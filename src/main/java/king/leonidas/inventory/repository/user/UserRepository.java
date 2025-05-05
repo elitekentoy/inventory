@@ -19,4 +19,13 @@ public interface UserRepository extends JpaRepository<User, UUID>
 	 * @return {@link Optional} of User
 	 */
 	Optional<User> findByUsernameIgnoreCase(String username);
+
+	/**
+	 * Exists by Username
+	 *
+	 * @param username Username
+	 * @return True if user exists, otherwise False
+	 */
+	boolean existsByUsernameIgnoreCase(String username);
+
 }

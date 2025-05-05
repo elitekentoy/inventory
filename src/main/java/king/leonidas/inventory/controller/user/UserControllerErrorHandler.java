@@ -1,5 +1,6 @@
 package king.leonidas.inventory.controller.user;
 
+import king.leonidas.inventory.controller.user_store.UserStoreController;
 import king.leonidas.inventory.service.user.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * User Controller Error Handler
  */
-@RestControllerAdvice(assignableTypes = UserController.class)
+@RestControllerAdvice(assignableTypes = {UserController.class, UserStoreController.class})
 public class UserControllerErrorHandler
 {
 
