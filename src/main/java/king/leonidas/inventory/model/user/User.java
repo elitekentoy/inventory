@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Locale;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -30,7 +29,7 @@ public class User
 	 * Id
 	 */
 	@Id
-	private UUID id;
+	private int id;
 
 	/**
 	 * Username
@@ -66,7 +65,6 @@ public class User
 	 */
 	public User(final UserDetailsRequest source)
 	{
-		this.id = UUID.randomUUID();
 		this.username = source.username();
 		this.password = source.password();
 		this.firstName = source.firstName();
@@ -95,7 +93,7 @@ public class User
 	 */
 	public UserDisplayResponse toDisplayResponse()
 	{
-		return new UserDisplayResponse(this.username, this.firstName, this.lastName, this.role.toString());
+		return new UserDisplayResponse(this.id, this.firstName, this.lastName, this.role.toString());
 	}
 
 }

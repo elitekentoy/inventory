@@ -10,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 /**
  * User Store
  */
@@ -36,5 +34,5 @@ public class UserStore
 	 */
 	@Id
 	@Column(name = "userId")
-	private UUID userId;
+	private int userId;
 }

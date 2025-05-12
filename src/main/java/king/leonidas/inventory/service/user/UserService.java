@@ -35,8 +35,9 @@ public interface UserService
 	 * Create User
 	 *
 	 * @param user User to be created
+	 * @return User created
 	 */
-	void createUser(User user);
+	User createUser(User user);
 
 	/**
 	 * Delete User by ID

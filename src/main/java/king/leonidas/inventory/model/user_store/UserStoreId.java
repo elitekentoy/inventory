@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.UUID;
 
 /**
  * User Store Composite ID
@@ -37,5 +36,5 @@ public class UserStoreId implements Serializable
 	 * User ID
 	 */
 	@EqualsAndHashCode.Include
-	private UUID userId;
+	private int userId;
 }
