@@ -1,0 +1,1039 @@
+openapi: '3.0.3'
+info:
+  title: Inventory API Specification
+  version: '1.0'
+servers:
+  - url: https://localhost:8080/api/v1
+tags:
+  - name: stores
+    description: Everything about Stores
+  - name: products
+    description: Everything about Products
+  - name: users
+    description: Everything about Users
+paths:
+  /stores:
+    get:
+      tags:
+        - stores
+      security:
+        - BearerAuth: []
+      summary: Fetch stores
+      description: Returns the stores
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          required: false
+          description: Page Number of the Stores to Fetch
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 10
+          required: false
+          description: Number of Stores to Fetch
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [asc,desc]
+            default: asc
+          required: false
+          description: Order of Stores to Fetch
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [name, createdAt]
+          required: false
+          description: Fields to sort by
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: Store Name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  data:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/Store'
+                  page:
+                    type: integer
+                    description: Current Page Number
+                  maxPage:
+                    type: integer
+                    description: Total Number of Pages Available
+        '400':
+          description: Invalid Query Parameters or Bad Request
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - stores
+      summary: Create a Store
+      description: Creates a store
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - name
+                - type
+              properties:
+                name:
+                  type: string
+                  description: Name of the Store
+                type:
+                  type: string
+                  description: Category of the Store
+              example:
+                name: "Jollibee"
+                type: "General Merchandise"
+
+      responses:
+        '204':
+          description: OK
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /stores/{storeId}:
+    get:
+      tags:
+        - stores
+      summary: Find by store ID.
+      description: Returns a single store
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: storeId
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  store:
+                    $ref: '#/components/schemas/Store'
+        '404':
+          description: Store not found
+        '400':
+          description: Invalid ID
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - stores
+      summary: Update the entire Store
+      description: Update the entire Store
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: storeId
+          required: true
+          in: path
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: string
+                  description: Store Name
+                type:
+                  type: string
+                  description: Category of the Store
+              example:
+                name: "Bubble Wash"
+                type: "Laundry"
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  owner:
+                    type: "object"
+                example:
+                  id: 3
+                  name: "Bubble Wash"
+                  type: "Laundry"
+                  owner:
+                    id: 1
+                    firstName: "Sophie"
+                    lastNamE: "Cat"
+        '400':
+          description: Bad Request
+        '404':
+          description: Store not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - stores
+      summary: Update some fields in Store
+      description: Update some fields in Store
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: storeId
+          required: true
+          in: path
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: string
+                  description: Store Name
+              example:
+                name: "Bubble Swish"
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  type:
+                    type: string
+                  owner:
+                    type: "object"
+                example:
+                  id: 3
+                  name: "Bubble Wash"
+                  type: "Laundry"
+                  owner:
+                    id: 1
+                    firstName: "Sophie"
+                    lastNamE: "Cat"
+        '400':
+          description: Bad Request
+        '404':
+          description: Store not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - stores
+      summary: Delete a Store
+      description: Delete a Store
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: storeId
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: "Deleted Successfully"
+        '404':
+          description: "Store not found"
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /stores/{storeId}/products:
+    get:
+      tags:
+        - stores
+        - products
+      summary: Fetch Store Products
+      description: Fetch Store Products
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: storeId
+          required: true
+          in: path
+          schema:
+            type: integer
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          required: false
+          description: Page Number of the Store Products to Fetch
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 10
+          required: false
+          description: Number of Store Products to Fetch
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [asc,desc]
+            default: asc
+          required: false
+          description: Order of Store Products to Fetch
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  data:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  page:
+                    type: integer
+                    example: 1
+                  maxPage:
+                    type: integer
+                    example: 1
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /products:
+    get:
+      tags:
+        - products
+      summary: Fetch Products
+      description: Fetch Products
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          required: false
+          description: Page Number of the Products to Fetch
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 10
+          required: false
+          description: Number of Products to Fetch
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc,desc]
+            default: asc
+          required: false
+          description: Order of Products to Fetch
+        - name: sort
+          description: Field to sort by
+          in: query
+          schema:
+            type: string
+            enum: [name, price]
+            default: name
+          required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  data:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  page:
+                    type: integer
+                    example: 1
+                  maxPage:
+                    type: integer
+                    example: 3
+        '400':
+          description: Bad Request
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - products
+      summary: Create a Product
+      description: Create Products
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - name
+                - price
+              properties:
+                name:
+                  type: string
+                  description: Product Name
+                price:
+                  type: number
+                  description: Product Price
+                image:
+                  type: string
+                  description: Product Image
+              example:
+                name: "Patata"
+                price: 12.50
+      responses:
+        '204':
+          description: OK
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /products/{productId}:
+    get:
+      tags:
+        - products
+      summary: Find by Product ID
+      description: Find by Product ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Bad Request
+        '404':
+          description: Product not found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - products
+      summary: Update the entire Product
+      description: Update Products
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - name
+                - price
+              properties:
+                name:
+                  type: string
+                  description: Product Name
+                price:
+                  type: number
+                  description: Product Price
+                image:
+                  type: string
+                  description: Product Image
+              example:
+                name: "Party Poppers"
+                price: 27.50
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  price:
+                    type: number
+                  imageUrl:
+                    type: string
+                  store:
+                    type: "object"
+                example:
+                  id: 2
+                  name: "Party Poppers"
+                  price: 27.50
+                  imageUrl:
+                  store:
+                    id: 1
+                    name: Max Store
+    patch:
+      tags:
+        - products
+      summary: Update some fields in Product
+      description: Update some fields in Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                price:
+                  type: number
+                  example: 12.50
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    delete:
+      tags:
+        - products
+      summary: Delete a Product
+      description: Delete a Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: "Deleted Successfully"
+        '404':
+          description: "Product not found"
+        default:
+          description: "Unexpected Error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users:
+    get:
+      tags:
+        - users
+      summary: Fetch Users
+      description: Fetch Users
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          required: false
+          description: Page Number of the Users to Fetch
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            default: 10
+          required: false
+          description: Number of Users to Fetch
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [asc,desc]
+            default: asc
+          required: false
+          description: Order of Users to Fetch
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [name, createdAt]
+          required: false
+          description: Fields to sort by
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+          description: User Complete Name
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  data:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/User'
+                  page:
+                    type: integer
+                    example: 1
+                  maxPage:
+                    type: integer
+                    example: 3
+  /users/{userId}:
+    get:
+      tags:
+        - users
+      summary: Find by User ID
+      description: Find by User ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          description: User ID
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    put:
+      tags:
+        - users
+      summary: Update the entire User
+      description: Update the entire User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          description: User ID
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                firstName:
+                  type: string
+                  example: Max
+                lastName:
+                  type: string
+                  example: Cat
+                role:
+                  type: string
+                  default: user
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  firstName:
+                    type: string
+                    example: Max
+                  lastName:
+                    type: string
+                    example: Cat
+                  role:
+                    type: string
+                    example: user
+        '400':
+          description: Bad Request
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - users
+      summary: Update some fields in User
+      description: Update some fields in User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          description: User ID
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                firstName:
+                  type: string
+                  example: Sophie
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  firstName:
+                    type: string
+                    example: Sophie
+                  lastName:
+                    type: string
+                    example: Cat
+                  role:
+                    type: string
+                    example: user
+    delete:
+      tags:
+        - users
+      summary: Delete User
+      description: Delete User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          description: User ID
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful
+        '400':
+          description: Bad Request
+        '404':
+          description: User Not Found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /users/{userId}/stores:
+    get:
+      tags:
+        - stores
+        - users
+      summary: Fetch Stores of a User
+      description: Fetch Stores of a User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: userId
+          description: User ID
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  data:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/Store'
+                  page:
+                    type: integer
+                    example: 1
+                  maxPage:
+                    type: integer
+                    example: 3
+        '400':
+          description: Bad Request
+        '404':
+          description: User not found
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /register:
+    post:
+      tags:
+        - users
+      summary: Create a User
+      description: Create a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - firstName
+                - lastName
+                - username
+                - password
+                - role
+              properties:
+                firstName:
+                  type: string
+                  example: Rokko
+                lastName:
+                  type: string
+                  example: Cat
+                username:
+                  type: string
+                  example: Kong
+                password:
+                  type: string
+                  example: pasuwordo
+                role:
+                  type: string
+                  example: user
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        default:
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /login:
+    post:
+      tags:
+        - users
+      summary: Login
+      description: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: shakira
+                password:
+                  type: string
+                  example: swing123
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: integer
+                    example: 2
+                  firstName:
+                    type: string
+                    example: Shakira
+                  lastname:
+                    type: string
+                    example: Waka
+                  accessToken:
+                    type: string
+                    example: accessing-token-desu
+                  refreshToken:
+                    type: string
+                    example: refreshing-token-desu
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Store:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 3
+        name:
+          type: string
+          example: Sisigan
+        type:
+          type: string
+          example: food
+        owner:
+          type: object
+          example:
+            id: 1
+            firstName: "Rokko"
+            lastName: "Cat"
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Dela Cruz
+        role:
+          type: string
+          example: user
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 4
+        name:
+          type: string
+          example: Cheese Burger
+        price:
+          type: number
+          example: 12.50
+        imageUrl:
+          type: string
+          example: https://aws-bucket.com/products/none
+        store:
+          type: "object"
+          properties:
+            id:
+              type: integer
+              example: 3
+            name:
+              type: string
+              example: Barato Store
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: Something went wrong
