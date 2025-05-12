@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * User Store Repository
@@ -28,7 +27,7 @@ public interface UserStoreRepository extends JpaRepository<UserStore, UserStoreI
 	 * @return Store with Owner
 	 */
 	@Query(value = UserStoreQueries.STORES_OF_USER, nativeQuery = true)
-	List<StoreWithOwnerProjection> findAllStoresByUserID(@Param("userId") UUID userId);
+	List<StoreWithOwnerProjection> findAllStoresByUserID(@Param("userId") int userId);
 
 	/**
 	 * Find Specific Store
@@ -38,7 +37,7 @@ public interface UserStoreRepository extends JpaRepository<UserStore, UserStoreI
 	 * @return Store with Owner
 	 */
 	@Query(value = UserStoreQueries.SPECIFIC_STORE_OF_USER, nativeQuery = true)
-	Optional<StoreWithOwnerProjection> findSpecificStore(@Param("userId") UUID userId, @Param("storeId")  int storeId);
+	Optional<StoreWithOwnerProjection> findSpecificStore(@Param("userId") int userId, @Param("storeId")  int storeId);
 
 	/**
 	 * Delete All Stores of User
@@ -47,7 +46,7 @@ public interface UserStoreRepository extends JpaRepository<UserStore, UserStoreI
 	 */
 	@Modifying
 	@Query(value = UserStoreQueries.DELETE_STORES_OF_USER, nativeQuery = true)
-	void deleteStoresOfUser(@Param("userId") UUID userId);
+	void deleteStoresOfUser(@Param("userId") int userId);
 
 	/**
 	 * Delete Specific Store of User
@@ -57,5 +56,5 @@ public interface UserStoreRepository extends JpaRepository<UserStore, UserStoreI
 	 */
 	@Modifying
 	@Query(value = UserStoreQueries.DELETE_SPECIFIC_STORE_OF_USER, nativeQuery = true)
-	void deleteSpecificStore(@Param("userId") UUID userId, @Param("storeId") int storeId);
+	void deleteSpecificStore(@Param("userId") int userId, @Param("storeId") int storeId);
 }

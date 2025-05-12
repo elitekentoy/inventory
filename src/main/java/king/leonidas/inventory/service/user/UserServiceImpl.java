@@ -60,9 +60,9 @@ public class UserServiceImpl implements UserService
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void createUser(final User user)
+	public User createUser(final User user)
 	{
-		userRepo.saveAndFlush(user);
+		return userRepo.saveAndFlush(user);
 	}
 
 	/**
