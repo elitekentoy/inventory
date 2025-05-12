@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Locale;
 
 @Entity
@@ -59,6 +60,11 @@ public class User
 	private RoleType role;
 
 	/**
+	 * Role Prefix
+	 */
+	private static final String ROLE_PREFIX = "ROLE_";
+
+	/**
 	 * Constructor
 	 *
 	 * @param source User Details Request
@@ -94,6 +100,16 @@ public class User
 	public UserDisplayResponse toDisplayResponse()
 	{
 		return new UserDisplayResponse(this.id, this.firstName, this.lastName, this.role.toString());
+	}
+
+	/**
+	 * Get Roles
+	 *
+	 * @return List of Roles
+	 */
+	public List<String> getRoles()
+	{
+		return List.of(ROLE_PREFIX + this.role.name());
 	}
 
 }
